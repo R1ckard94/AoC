@@ -12,3 +12,4 @@ C:\Users\ricka\dev\AoC\Day5\obj\Debug\net8.0\refint\Day5.dll
 C:\Users\ricka\dev\AoC\Day5\obj\Debug\net8.0\Day5.pdb
 C:\Users\ricka\dev\AoC\Day5\obj\Debug\net8.0\Day5.genruntimeconfig.cache
 C:\Users\ricka\dev\AoC\Day5\obj\Debug\net8.0\ref\Day5.dll
+C:\Users\ricka\dev\AoC\Day5\obj\Debug\net8.0\Day5.sourcelink.json
