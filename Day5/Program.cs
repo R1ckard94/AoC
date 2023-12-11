@@ -3,10 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
-<<<<<<< HEAD
 using System.Text;
-=======
->>>>>>> d9163bf (first commit)
 using System.Text.RegularExpressions;
 
 class Program
@@ -14,19 +11,12 @@ class Program
 
     static void Main()
     {
-<<<<<<< HEAD
         string fileName = "C:\\Users\\ricka\\dev\\AoC\\Day5\\input.txt";
         List<string> fileContent = FileInput(fileName);
         Part1(fileContent);
 
-        Part2(fileContent); //dumb bruteforce way to do it, almost 30min runtime
+        //Part2(fileContent); //dumb bruteforce way to do it, almost 30min runtime
        
-=======
-        string fileName = "C:\\Users\\ricka\\dev\\AoC\\Day5\\ExInput.txt";
-        List<string> fileContent = FileInput(fileName);
-
-        Part1(fileContent);
->>>>>>> d9163bf (first commit)
 
     }
 
@@ -34,7 +24,6 @@ class Program
     {
         
         List<long> seeds = GetSeeds(fileContent.First());
-<<<<<<< HEAD
         SortedList<Tuple<long, long>, long> seedToSoilMap = GetMappings(fileContent.GetRange(3, 27));
         SortedList<Tuple<long, long>, long> soilToFertalizerMap = GetMappings(fileContent.GetRange(32, 20));
         SortedList<Tuple<long, long>, long> fertalizerToWaterMap = GetMappings(fileContent.GetRange(54, 48));
@@ -144,12 +133,6 @@ class Program
 
         }
         Console.WriteLine($"PART2 -> lowestLocation: {lowestLocation}");
-=======
-        SortedList<long,long> mappings = GetMappings(fileContent.GetRange(3,2));
-
-
-
->>>>>>> d9163bf (first commit)
     }
 
     private static List<long> GetSeeds(string firstLine)
@@ -165,7 +148,6 @@ class Program
         }
         return numbers;
     }
-<<<<<<< HEAD
     private static SortedList<Tuple<long, long>, long> GetMappings(List<string> mappings)
     {
         SortedList<Tuple<long, long>, long> dict = new();
@@ -173,16 +155,6 @@ class Program
         var destinationRangeStart = 0L;
         var sourceRangeStart = 0L;
         var rangeLength = 0L;
-=======
-    private static SortedList<long,long> GetMappings(List<string> mappings)
-    {
-        SortedList<long,long> numbers = new SortedList<long, long>();
-        string pattern = @"\b\d+\b";
-        var destinationRangeStart = 0l;
-        var sourceRangeStart = 0l;
-        var rangeLength = 0l;
-        var max = 0l;
->>>>>>> d9163bf (first commit)
         foreach (var line in mappings)
         {
             MatchCollection matches = Regex.Matches(line, pattern);
@@ -191,7 +163,6 @@ class Program
             sourceRangeStart = long.Parse(matches.ElementAt(1).Value);
             rangeLength = long.Parse(matches.ElementAt(2).Value);
 
-<<<<<<< HEAD
             
             dict.Add(new Tuple<long, long>(sourceRangeStart, destinationRangeStart),  rangeLength);
 
@@ -208,30 +179,10 @@ class Program
     private static List<string> FileInput(string name)
     {
         List<string> list = [];
-=======
-
-        }
-
-        return numbers;
-    }
-    public static void Part2(List<string> fileContent)
-    {
-
-
-    }
-   
-
-    
-
-    private static List<string> FileInput(string name)
-    {
-        List<string> list = new List<string>();
->>>>>>> d9163bf (first commit)
 
         try
         {
             // Create a StreamReader to read from the file
-<<<<<<< HEAD
             using StreamReader rFile = new(name);
             // Read each line from the file and add it to the list
             while (!rFile.EndOfStream)
@@ -239,16 +190,6 @@ class Program
                 string? data = rFile.ReadLine();
                 if (data != null)
                     list.Add(data);
-=======
-            using (StreamReader rFile = new StreamReader(name))
-            {
-                // Read each line from the file and add it to the list
-                while (!rFile.EndOfStream)
-                {
-                    string data = rFile.ReadLine();
-                    list.Add(data);
-                }
->>>>>>> d9163bf (first commit)
             }
         }
         catch (FileNotFoundException e)
