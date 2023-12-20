@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Numerics;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
@@ -16,7 +17,7 @@ class Program
 
     static void Main()
     {
-        string fileName = "C:\\Users\\ricka\\dev\\AoC\\Day8\\testinput.txt";
+        string fileName = "C:\\Users\\ricka\\dev\\AoC\\Day8\\input.txt";
         List<string> fileContent = FileInput(fileName);
         List<char> charsNav = new();
         string navigation = fileContent[0];
@@ -26,7 +27,7 @@ class Program
         }
         Dictionary<string,Tuple<string,string>> dict = PopulateDictionary(fileContent.GetRange(2,fileContent.Count-2));
         
-        //Part1(charsNav, dict);
+        Part1(charsNav, dict);
         Console.WriteLine("-----------------------");
         Part2(charsNav, dict);
 
@@ -61,23 +62,18 @@ class Program
 
     public static void Part2(List<char> nav, Dictionary<string, Tuple<string, string>> pattern)
     {
-        int steps = 0;
+        List<string> currStartPos = FilterStringsWithLastChar(pattern.Keys, 'A');
+        List<string> currEndPos = FilterStringsWithLastChar(pattern.Keys, 'Z');
+        List<int> AtoZCount = new();
 
-        bool allAtEnd = false;
-        List<string> currStartPos = FilterStringsWithA(pattern.Keys);
-        List<string> currEndPos = FilterStringsWithZ(pattern.Keys);
-        List<string> currentPos = currStartPos;
 
-        foreach (var item in currentPos)
+
+        foreach (var start in currStartPos)
         {
-            Console.WriteLine(item);
-        } 
-        while (!allAtEnd)
-        {
-            for (int i = 0; i < currentPos.Count; i++)
-            {
-                bool added = false;
-                string currPos = currentPos[i];
+            bool added = false;
+            int steps = 0;
+            string currPos = start;
+            while (!added) {
                 foreach (var item in nav)
                 {
                     steps++;
@@ -93,43 +89,32 @@ class Program
                     if (currEndPos.Contains(currPos))
                     {
                         added = true;
-                        currentPos[i] = currPos;
-                        break; 
+                        AtoZCount.Add(steps);
+                        break;
                     }
                 }
-                if (!added)
-                {
-                    currentPos[i] = currPos;
-                }
-            }
-            foreach (var item in currentPos)
-            {
-                Console.WriteLine(item);
-            }
-            if (currentPos.TrueForAll(n => n[2].Equals('Z')))
-            {
-                allAtEnd = true;
             }
             
         }
-        Console.WriteLine("PART 2 --> Total Sum: " + steps);
+        BigInteger lcm = AtoZCount.Last();
+        foreach (var num in AtoZCount)
+        {
+            lcm = ((lcm * num) / BigInteger.GreatestCommonDivisor(lcm, num));
+            
+        }
+
+        Console.WriteLine("PART 2 --> Total Sum: " + lcm.ToString());
     }
 
 
-
-    private static List<string> FilterStringsWithA(Dictionary<string, Tuple<string, string>>.KeyCollection keys)
+    private static List<string> FilterStringsWithLastChar(Dictionary<string, Tuple<string, string>>.KeyCollection keys, char letter)
     {
-        var filteredStrings = keys.Where(str => str.Length >= 3 && str[2] == 'A').ToList();
+        var filteredStrings = keys.Where(str => str.Length >= 3 && str[2] == letter).ToList();
 
         return filteredStrings;
     }
 
-    private static List<string> FilterStringsWithZ(Dictionary<string, Tuple<string, string>>.KeyCollection keys)
-    {
-        var filteredStrings = keys.Where(str => str.Length >= 3 && str[2] == 'Z').ToList();
 
-        return filteredStrings;
-    }
 
     private static Dictionary<string, Tuple<string, string>> PopulateDictionary(List<string> fileContent)
     {
@@ -147,16 +132,14 @@ class Program
    
     public static string ExtractStringInParentheses(string input)
     {
-        // Use a regular expression to extract the string within parentheses
+
         var match = Regex.Match(input, @"\(([^)]*)\)");
 
-        // Check if a match was found
         if (match.Success)
         {
             return match.Groups[1].Value;
         }
 
-        // Return an empty string if no match was found
         return string.Empty;
     }
 
@@ -164,14 +147,13 @@ class Program
     private static Tuple<string,string> CreateTuple(string card)
     {
         string extractedString = ExtractStringInParentheses(card);
-        // Filter out the first 3 characters, the first 3 characters inside parentheses, and the last 3 characters
-
         string left = extractedString.Substring(0, Math.Min(3, extractedString.Length));
         string right = extractedString.Substring(extractedString.Length - Math.Min(3, extractedString.Length));
         
         return new Tuple<string,string>(left,right);        
         
     }
+
 
     private static List<string> FileInput(string name)
     {
